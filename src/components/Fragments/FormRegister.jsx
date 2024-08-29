@@ -28,7 +28,7 @@ const FormRegister = () => {
       />
       <InputForm
         label='Confirm Password'
-        id='password'
+        id='confirmPassword'
         type='password'
         placeholder='*****'
         name='confirmPassword'

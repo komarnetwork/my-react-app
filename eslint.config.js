@@ -35,6 +35,7 @@ export default [
       ],
       'react/prop-types': 'off',
       'unicorn/no-unknown-words': 'off',
+      'react/no-unescaped-entities': 'off',
     },
   },
 ];
