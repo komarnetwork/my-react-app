@@ -3,7 +3,7 @@ import Button from '../Elements/Button';
 const CartProduct = (props) => {
   const { children } = props;
   return (
-    <div className='w-full max-w-sm bg-gray-800 border border-gray-200 rounded-lg shadow mx-2 flex flex-col justify-between'>
+    <div className='w-full max-w-xs bg-gray-800 border border-gray-200 rounded-lg shadow mx-3 my-2 flex flex-col justify-between'>
       {children}
     </div>
   );
@@ -31,11 +31,16 @@ const Body = (props) => {
 };
 
 const Footer = (props) => {
-  const { price } = props;
+  const { price, handleAddToCart, id } = props;
   return (
     <div className='flex items-center justify-between px-5 pb-5'>
-      <span className='text-3xl font-bold text-white'>{price}</span>
-      <Button className='bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'>
+      <span className='text-lg font-bold text-white'>
+        {price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+      </span>
+      <Button
+        className='bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
+        onClick={() => handleAddToCart(id)}
+      >
         Add to cart
       </Button>
     </div>
