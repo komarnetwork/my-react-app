@@ -3,7 +3,7 @@ import Button from '../Elements/Button';
 const CartProduct = (props) => {
   const { children } = props;
   return (
-    <div className='w-full max-w-sm bg-gray-800 border border-gray-200 rounded-lg shadow mx-2'>
+    <div className='w-full max-w-sm bg-gray-800 border border-gray-200 rounded-lg shadow mx-2 flex flex-col justify-between'>
       {children}
     </div>
   );
@@ -19,11 +19,11 @@ const Header = (props) => {
 };
 
 const Body = (props) => {
-  const { children, title } = props;
+  const { children, name } = props;
   return (
-    <div className='px-5 pb-5 text-white'>
+    <div className='px-5 pb-5 text-white h-full'>
       <a href='#'>
-        <h5 className='text-xl font-semibold tracking-tight'>{title}</h5>
+        <h5 className='text-xl font-semibold tracking-tight'>{name}</h5>
       </a>
       <p className='py-1'>{children}</p>
     </div>
