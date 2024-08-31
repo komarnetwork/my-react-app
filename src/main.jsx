@@ -6,12 +6,14 @@ import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import ErrorPage from './pages/404';
 import ProductsPage from './pages/product';
+import ProfilePage from './pages/profile';
 
 const router = createBrowserRouter([
   { path: '/', element: <div>HomePage</div>, errorElement: <ErrorPage /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/products', element: <ProductsPage /> },
+  { path: '/profile', element: <ProfilePage /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>
