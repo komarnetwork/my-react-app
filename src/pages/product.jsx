@@ -77,7 +77,7 @@ const ProductsPage = () => {
           {products.length > 0 &&
             products.map((product) => (
               <CartProduct key={product.id}>
-                <CartProduct.Header image={product.image} />
+                <CartProduct.Header image={product.image} id={product.id} />
                 <CartProduct.Body name={product.title}>
                   {product.description}
                 </CartProduct.Body>
