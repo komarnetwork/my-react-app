@@ -1,45 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Elements/Button';
 import CartProduct from '../components/Fragments/CardProduct';
-
-const products = [
-  {
-    id: 1,
-    name: 'Apple Watch Series 7 GPS',
-    price: 599000,
-    image: 'https://picsum.photos/350/200.webp',
-    description: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam
-          accusamus necessitatibus vero rem neque officia nobis iusto, minima
-          aut adipisci.`,
-  },
-  {
-    id: 2,
-    name: 'Apple Watch Series 6',
-    price: 400000,
-    image: 'https://picsum.photos/350/200.webp',
-    description: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam accusamus necessitat.`,
-  },
-  {
-    id: 3,
-    name: 'Apple Watch Series 5',
-    price: 300000,
-    image: 'https://picsum.photos/350/200.webp',
-    description: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam accusamus necessitat.`,
-  },
-];
+import { getProducts } from '../services/products.service';
 
 const email = localStorage.getItem('email');
 
 const ProductsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')) || []);
   }, []);
 
   useEffect(() => {
-    if (cart.length > 0) {
+    if (products.length > 0 && cart.length > 0) {
       const sum = cart.reduce((acc, item) => {
         const product = products.find((product) => product.id === item.id);
         return acc + product.price * item.qty;
@@ -47,7 +23,7 @@ const ProductsPage = () => {
       setTotalPrice(sum);
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-  }, [cart]);
+  }, [cart, products]);
 
   const handleLogout = () => {
     localStorage.removeItem('email');
@@ -82,6 +58,13 @@ const ProductsPage = () => {
     cartRef.current = [...cartRef.current, { id, qty: 1 }];
     localStorage.setItem('cart', JSON.stringify(cartRef.current));
   };
+
+  useEffect(() => {
+    getProducts((data) => {
+      setProducts(data);
+    });
+  }, []);
+
   return (
     <>
       <div className='flex justify-end h-16 bg-blue-600 text-white items-center px-5'>
@@ -92,19 +75,20 @@ const ProductsPage = () => {
       </div>
       <div className='flex justify-center py-5'>
         <div className='w-2/3 md:w-3/4 flex flex-wrap'>
-          {products.map((product) => (
-            <CartProduct key={product.id}>
-              <CartProduct.Header image={product.image} />
-              <CartProduct.Body name={product.name}>
-                {product.description}
-              </CartProduct.Body>
-              <CartProduct.Footer
-                price={product.price}
-                id={product.id}
-                handleAddToCart={handleAddToCart}
-              />
-            </CartProduct>
-          ))}
+          {products.length > 0 &&
+            products.map((product) => (
+              <CartProduct key={product.id}>
+                <CartProduct.Header image={product.image} />
+                <CartProduct.Body name={product.title}>
+                  {product.description}
+                </CartProduct.Body>
+                <CartProduct.Footer
+                  price={product.price}
+                  id={product.id}
+                  handleAddToCart={handleAddToCart}
+                />
+              </CartProduct>
+            ))}
         </div>
 
         <div className='w-3/6 sm:w-2/4'>
@@ -119,39 +103,40 @@ const ProductsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {cart.map((item) => {
-                const product = products.find(
-                  (product) => product.id === item.id
-                );
-                if (product) {
-                  return (
-                    <tr key={item.id}>
-                      <td>{product.name}</td>
-                      <td>
-                        {product.price.toLocaleString('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR',
-                        })}
-                      </td>
-                      <td>{item.qty}</td>
-                      <td>
-                        {(item.qty * product.price).toLocaleString('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR',
-                        })}
-                      </td>
-                    </tr>
+              {products.length > 0 &&
+                cart.map((item) => {
+                  const product = products.find(
+                    (product) => product.id === item.id
                   );
-                } else {
-                  return null;
-                }
-              })}
+                  if (product) {
+                    return (
+                      <tr key={item.id}>
+                        <td>{product.title.substring(0, 20)}...</td>
+                        <td>
+                          {product.price.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          })}
+                        </td>
+                        <td>{item.qty}</td>
+                        <td>
+                          {(item.qty * product.price).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          })}
+                        </td>
+                      </tr>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
               <tr className='font-bold'>
                 <td colSpan={3}>Total Price</td>
                 <td>
-                  {totalPrice.toLocaleString('id-ID', {
+                  {totalPrice.toLocaleString('en-US', {
                     style: 'currency',
-                    currency: 'IDR',
+                    currency: 'USD',
                   })}
                 </td>
               </tr>
