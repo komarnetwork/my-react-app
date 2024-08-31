@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../components/Elements/Button';
 import CartProduct from '../components/Fragments/CardProduct';
 
@@ -67,6 +67,21 @@ const ProductsPage = () => {
     }
   };
 
+  const cartRef = useRef(JSON.parse(localStorage.getItem('cart')) || []);
+
+  const handleAddToCartRef = (id) => {
+    // if (cartRef.current.find((item) => item.id === id)) {
+    //   setCart(
+    //     cartRef.current.map((item) =>
+    //       item.id === id ? { ...item, qty: item.qty + 1 } : item
+    //     )
+    //   );
+    // } else {
+    //   setCart([...cartRef.current, { id, qty: 1 }]);
+    // }
+    cartRef.current = [...cartRef.current, { id, qty: 1 }];
+    localStorage.setItem('cart', JSON.stringify(cartRef.current));
+  };
   return (
     <>
       <div className='flex justify-end h-16 bg-blue-600 text-white items-center px-5'>
